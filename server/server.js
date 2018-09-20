@@ -22,6 +22,17 @@ io.on('connection', (socket) => {
     //     text: 'Hey. What is going on?',
     //     createdAt: 123123
     // });
+    socket.emit('newMessage', {
+        from: 'Admin',
+        text: 'Welcome to the chat app',
+        createdAt: new Date().getTime()
+    });
+
+    socket.broadcast.emit('newMessage', {
+        from: 'Admin',
+        text: 'New user joined',
+        createdAt: new Date().getTime()
+    });
 
     socket.on('createMessage', (message) => {
         console.log('createMessage', message);
@@ -30,6 +41,11 @@ io.on('connection', (socket) => {
             text: message.text,
             createdAt: new Date().getTime()
         });
+        // socket.broadcast.emit('newMessage', { // sends to every else
+        //     from: message.from,
+        //     text: message.text,
+        //     createdAt: new Date().getTime()
+        // });
     });
 
     socket.on('disconnect', () => {
